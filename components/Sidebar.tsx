@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import { Plus, LogOut } from 'lucide-react';
+import { Plus, LogOut, User } from 'lucide-react';
 import { Room } from '@/types/chat';
 import { RoomList } from './RoomList';
 import { CreateRoomDialog, JoinRoomDialog } from './RoomDialogs';
@@ -15,6 +15,8 @@ interface SidebarProps {
   onRoomRemove: (roomId: number) => void;
   username: string;
   onUsernameChange: (username: string) => void;
+  avatar?: string;
+  onAvatarClick?: () => void;
 }
 
 export function Sidebar({
@@ -25,6 +27,8 @@ export function Sidebar({
   onRoomRemove,
   username,
   onUsernameChange,
+  avatar,
+  onAvatarClick,
 }: SidebarProps) {
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showJoinDialog, setShowJoinDialog] = useState(false);
@@ -55,9 +59,23 @@ export function Sidebar({
       >
         {/* User Info */}
         <div className="mb-6 pb-4 border-b border-border">
-          <div className="mb-3">
-            <p className="text-xs text-text-secondary mb-1">当前用户</p>
-            <p className="text-lg font-bold text-primary truncate">{username}</p>
+          <div className="flex items-center gap-3 mb-3">
+            <button
+              onClick={onAvatarClick}
+              className="flex-shrink-0 rounded-full overflow-hidden hover:opacity-80 transition-opacity"
+            >
+              {avatar ? (
+                <img src={avatar} alt={username} className="w-12 h-12 object-cover" />
+              ) : (
+                <div className="w-12 h-12 bg-surface border-2 border-border rounded-full flex items-center justify-center">
+                  <User size={24} className="text-text-secondary" />
+                </div>
+              )}
+            </button>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs text-text-secondary mb-1">当前用户</p>
+              <p className="text-lg font-bold truncate">{username}</p>
+            </div>
           </div>
           <button
             onClick={handleChangeUsername}

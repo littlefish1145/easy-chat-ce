@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { X, Menu } from 'lucide-react';
+import { X, Menu, User } from 'lucide-react';
 import { Room } from '@/types/chat';
 import { RoomList } from './RoomList';
 
@@ -14,6 +14,7 @@ interface MobileSidebarProps {
   onRoomSelect: (roomId: number) => void;
   onRoomRemove: (roomId: number) => void;
   username: string;
+  avatar?: string;
 }
 
 export function MobileSidebar({
@@ -24,6 +25,7 @@ export function MobileSidebar({
   onRoomSelect,
   onRoomRemove,
   username,
+  avatar,
 }: MobileSidebarProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -91,8 +93,19 @@ export function MobileSidebar({
         </div>
 
         <div className="mb-6 pb-4 border-b border-border">
-          <p className="text-xs text-text-secondary mb-1">当前用户</p>
-          <p className="text-lg font-bold text-primary truncate">{username}</p>
+          <div className="flex items-center gap-3">
+            {avatar ? (
+              <img src={avatar} alt={username} className="w-12 h-12 rounded-full object-cover" />
+            ) : (
+              <div className="w-12 h-12 bg-surface border-2 border-border rounded-full flex items-center justify-center">
+                <User size={24} className="text-text-secondary" />
+              </div>
+            )}
+            <div className="flex-1 min-w-0">
+              <p className="text-xs text-text-secondary mb-1">当前用户</p>
+              <p className="text-lg font-bold truncate">{username}</p>
+            </div>
+          </div>
         </div>
 
         <div className="flex-1">

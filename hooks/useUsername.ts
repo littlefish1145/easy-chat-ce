@@ -3,15 +3,21 @@
 import { useState, useEffect, useCallback } from 'react';
 
 const USERNAME_STORAGE_KEY = 'chatUsername';
+const AVATAR_STORAGE_KEY = 'chatAvatar';
 
 export function useUsername() {
   const [username, setUsername] = useState<string>('');
+  const [avatar, setAvatar] = useState<string>('');
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem(USERNAME_STORAGE_KEY);
-    if (stored) {
-      setUsername(stored);
+    const storedName = localStorage.getItem(USERNAME_STORAGE_KEY);
+    const storedAvatar = localStorage.getItem(AVATAR_STORAGE_KEY);
+    if (storedName) {
+      setUsername(storedName);
+    }
+    if (storedAvatar) {
+      setAvatar(storedAvatar);
     }
     setIsLoaded(true);
   }, []);
@@ -21,5 +27,10 @@ export function useUsername() {
     setUsername(newUsername);
   }, []);
 
-  return { username, isLoaded, updateUsername };
+  const updateAvatar = useCallback((newAvatar: string) => {
+    localStorage.setItem(AVATAR_STORAGE_KEY, newAvatar);
+    setAvatar(newAvatar);
+  }, []);
+
+  return { username, avatar, isLoaded, updateUsername, updateAvatar };
 }
